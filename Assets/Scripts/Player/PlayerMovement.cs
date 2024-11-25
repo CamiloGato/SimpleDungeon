@@ -4,50 +4,28 @@ namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
-        public float speed = 5f;
-        private Rigidbody2D _rb;
-        private Vector2 _movement;
-        private Animator _animator;
-        private SpriteRenderer _spriteRenderer;
-        private Camera _mainCamera;
-        private Transform _tf;
+        private PlayerVariables _playerVariables;
 
-        void Awake()
-        {
-            _rb = GetComponent<Rigidbody2D>();
-            _animator = GetComponent<Animator>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
-            _tf = transform;
-        }
+        private ref Vector2 MouseDirection => ref _playerVariables.mouseDirection;
+        private ref Vector2 Movement => ref _playerVariables.movement;
+        private Rigidbody2D Rb => _playerVariables.rb;
+        private float Speed => _playerVariables.playerSpeed;
 
-        void Start()
+        private void Awake()
         {
-            _mainCamera = Camera.main;
+            _playerVariables = GetComponent<PlayerVariables>();
         }
 
         void Update()
         {
-            _movement.x = Input.GetAxis("Horizontal");
-            _movement.y = Input.GetAxis("Vertical");
-
-            _animator.SetFloat("Horizontal", _movement.x);
-            _animator.SetFloat("Vertical", _movement.y);
-
-            Vector3 mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0f;
-
-            Vector2 directionToMouse = (mousePosition - _tf.position).normalized;
-
-            _spriteRenderer.flipX = directionToMouse.x < 0;
-
-            float alignment = Vector2.Dot(_movement.normalized, directionToMouse);
-            _movement.x = alignment < 0 ? _movement.x * 0.5f : _movement.x;
+            float alignment = Vector2.Dot(Movement.normalized, MouseDirection);
+            Movement.x = alignment < 0 ? Movement.x * 0.5f : Movement.x;
         }
 
         void FixedUpdate()
         {
-            Vector2 newPosition = _rb.position + _movement * (speed * Time.fixedDeltaTime);
-            _rb.MovePosition(newPosition);
+            Vector2 newPosition = Rb.position + Movement * (Speed * Time.fixedDeltaTime);
+            Rb.MovePosition(newPosition);
         }
     }
 }
