@@ -20,6 +20,12 @@ namespace Player
             _playerVariables = GetComponent<PlayerVariables>();
         }
 
+        private void Start()
+        {
+            CollectItem(_playerVariables.defaultWeapon);
+            ChangeWeapon();
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Q))

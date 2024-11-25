@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Items
@@ -6,19 +7,19 @@ namespace Items
     [CreateAssetMenu(fileName = "Inventory", menuName = "Item/Inventory", order = 0)]
     public class Inventory : ScriptableObject
     {
-        public List<Dictionary<ItemData, int>> items = new List<Dictionary<ItemData, int>>();
+        public Action<ItemData, int> OnItemAdded;
+        public Action<ItemData, int> OnItemRemoved;
+
+        public Dictionary<ItemData, int> items = new Dictionary<ItemData, int>();
 
         public List<TItem> GetItems<TItem>() where TItem : ItemData
         {
             List<TItem> itemsOfType = new List<TItem>();
-            foreach (Dictionary<ItemData, int> itemDictionary in items)
+            foreach (KeyValuePair<ItemData, int> itemDictionary in items)
             {
-                foreach (KeyValuePair<ItemData, int> item in itemDictionary)
+                if (itemDictionary.Key is TItem item)
                 {
-                    if (item.Key is TItem)
-                    {
-                        itemsOfType.Add((TItem)item.Key);
-                    }
+                    itemsOfType.Add(item);
                 }
             }
 
@@ -27,32 +28,28 @@ namespace Items
 
         public void AddItem(ItemData itemData)
         {
-            foreach (var itemDictionary in items)
+            if (!items.TryAdd(itemData, 1))
             {
-                if (itemDictionary.ContainsKey(itemData))
-                {
-                    itemDictionary[itemData]++;
-                    return;
-                }
+                items[itemData]++;
             }
 
-            items.Add(new Dictionary<ItemData, int> { { itemData, 1 } });
+            OnItemAdded?.Invoke(itemData, items[itemData]);
         }
 
         public void RemoveItem(ItemData itemData)
         {
-            foreach (Dictionary<ItemData, int> itemDictionary in items)
+            if (items.TryGetValue(itemData, out int amount))
             {
-                if (itemDictionary.ContainsKey(itemData))
+                if (amount > 1)
                 {
-                    itemDictionary[itemData]--;
-                    if (itemDictionary[itemData] == 0)
-                    {
-                        items.Remove(itemDictionary);
-                    }
-
-                    return;
+                    items[itemData]--;
                 }
+                else
+                {
+                    items.Remove(itemData);
+                }
+
+                OnItemRemoved?.Invoke(itemData, amount - 1);
             }
         }
     }

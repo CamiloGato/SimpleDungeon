@@ -12,6 +12,7 @@ namespace Player
         [Header("Player Configuration")]
         public float playerSpeed = 5.0f;
         public Inventory playerInventory;
+        public WeaponData defaultWeapon;
 
         [Header("Weapon Configuration")]
         public Transform weaponTransform;
