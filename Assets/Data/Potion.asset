@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f7e33340e242d087fc017eebf90278, type: 3}
-  m_Name: Hand
+  m_Script: {fileID: 11500000, guid: eb99262d11624b20aaa83b7100548109, type: 3}
+  m_Name: Potion
   m_EditorClassIdentifier: 
-  itemImage: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  itemName: Hand
-  itemDescription: Just Hand
-  weaponDamage: 2
-  weaponRange: 0.5
+  itemImage: {fileID: 21300000, guid: bacfc0eb0c19bbf4aa8cd1c79ca1c1f2, type: 3}
+  itemName: Potion
+  itemDescription: Epic Potion

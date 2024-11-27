@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Items;
 using UnityEngine;
 
@@ -15,15 +16,15 @@ namespace Player
         private int _currentWeapon;
         private int _currentUtility;
 
-        private void Awake()
-        {
-            _playerVariables = GetComponent<PlayerVariables>();
-        }
-
-        private void Start()
+        public void Initialize()
         {
             CollectItem(_playerVariables.defaultWeapon);
             ChangeWeapon();
+        }
+
+        private void Awake()
+        {
+            _playerVariables = GetComponent<PlayerVariables>();
         }
 
         private void Update()

@@ -10,9 +10,9 @@ namespace UI
         public Inventory inventory;
         public Transform inventoryPanel;
 
-        private List<ItemView> _items = new List<ItemView>();
+        private Dictionary<ItemData ,ItemView> _items = new Dictionary<ItemData, ItemView>();
 
-        private void Start()
+        public void Initialize()
         {
             foreach (Transform child in inventoryPanel)
             {
@@ -20,13 +20,13 @@ namespace UI
             }
         }
 
-        private void OnEnable()
+        public void AddSubscriptions()
         {
             inventory.OnItemAdded += OnItemAdded;
             inventory.OnItemRemoved += OnItemRemoved;
         }
 
-        private void OnDisable()
+        public void RemoveSubscription()
         {
             inventory.OnItemAdded -= OnItemAdded;
             inventory.OnItemRemoved -= OnItemRemoved;
@@ -36,27 +36,27 @@ namespace UI
         {
             if (amount > 1)
             {
-                ItemView item = _items.Find(element => element.ItemName == itemData.itemName);
-                item.UpdateAmount(amount);
+                _items.TryGetValue(itemData, out ItemView item);
+                item?.UpdateAmount(amount);
                 return;
             }
 
             ItemView newItem = Instantiate(itemView, inventoryPanel);
             newItem.SetUpItem(itemData.itemImage, itemData.itemName);
-            _items.Add(newItem);
+            _items.Add(itemData ,newItem);
         }
 
-        private void OnItemRemoved(ItemData item, int amount)
+        private void OnItemRemoved(ItemData itemData, int amount)
         {
-            ItemView itemToRemove = _items.Find(element => element.ItemName == item.itemName);
+            _items.TryGetValue(itemData, out ItemView itemToRemove);
             if (amount <= 0)
             {
-                _items.Remove(itemToRemove);
-                Destroy(itemToRemove.gameObject);
+                _items.Remove(itemData);
+                Destroy(itemToRemove?.gameObject);
             }
             else
             {
-                itemToRemove.UpdateAmount(amount);
+                itemToRemove?.UpdateAmount(amount);
             }
         }
     }
