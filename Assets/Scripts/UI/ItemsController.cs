@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Items;
+using Items.Data;
 using UnityEngine;
 
 namespace UI

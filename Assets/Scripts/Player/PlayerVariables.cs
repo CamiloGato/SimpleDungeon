@@ -1,4 +1,5 @@
 ﻿using Items;
+using Items.Data;
 using UnityEngine;
 
 namespace Player
