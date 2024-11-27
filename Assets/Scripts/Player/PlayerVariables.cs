@@ -9,6 +9,8 @@ namespace Player
         [Header("Input Configuration")]
         public string inputHorizontal = "Horizontal";
         public string inputVertical = "Vertical";
+        public string inputWeapon = "Fire1";
+        public string inputUtility = "Fire2";
 
         [Header("Player Configuration")]
         public float playerSpeed = 5.0f;

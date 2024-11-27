@@ -30,12 +30,12 @@ namespace Player
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetButtonDown(_playerVariables.inputWeapon))
             {
                 ChangeWeapon();
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetButtonDown(_playerVariables.inputUtility))
             {
                 ChangeUtility();
             }
